@@ -1,6 +1,6 @@
 {
-  "name": "sncl-copiler",
-  "displayName": "sncl-copiler",
+  "name": "sncl-compiler",
+  "displayName": "sncl-compiler",
   "description": "",
   "version": "0.0.1",
   "engines": {
@@ -14,8 +14,8 @@
   "contributes": {
     "commands": [
       {
-        "command": "sncl-copiler.helloWorld",
-        "title": "Hello World"
+        "command": "sncl-compiler.compile",
+        "title": "Compile sNCl"
       }
     ]
   },

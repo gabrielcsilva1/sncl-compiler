@@ -1,26 +1,64 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
+import * as vscode from 'vscode'
+import * as os from 'node:os'
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
-
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "sncl-copiler" is now active!');
-
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('sncl-copiler.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from sncl-copiler!');
-	});
-
-	context.subscriptions.push(disposable);
+function formatToWslFilePath(filePath: string): string {
+  return filePath.replace(/^([A-Za-z]):/, '/mnt/$1').replace(/\\/g, '/')
 }
 
-// This method is called when your extension is deactivated
-export function deactivate() {}
+function createTerminal(): vscode.Terminal {
+  if (os.platform() === 'win32') {
+    return vscode.window.createTerminal({
+      name: 'WSL (SNCL Compiler)',
+      shellPath: 'wsl.exe',
+    })
+  }
+
+  return vscode.window.createTerminal({ name: 'SNCL Compiler' })
+}
+
+let existingTerminal: vscode.Terminal | null = null
+
+export function activate(context: vscode.ExtensionContext) {
+  const disposable = vscode.commands.registerCommand('sncl-compiler.compile', async () => {
+    const editor = vscode.window.activeTextEditor
+
+    if (!editor) {
+      vscode.window.showErrorMessage('Nenhum editor de texto ativo.')
+      return
+    }
+
+    let filePath = editor.document.fileName
+
+    if (!filePath.endsWith('.sncl')) {
+      vscode.window.showErrorMessage('O arquivo atual não possui a extensão .sncl.')
+      return
+    }
+
+    if (os.platform() === 'win32') {
+      filePath = formatToWslFilePath(filePath)
+    }
+
+    if (!existingTerminal) {
+      existingTerminal = createTerminal()
+    }
+
+    existingTerminal.show()
+    existingTerminal.sendText(`sncl ${filePath}`)
+  })
+
+  const didCloseTerminal = vscode.window.onDidCloseTerminal((closedTerminal) => {
+    if (closedTerminal === existingTerminal) {
+      existingTerminal = null
+    }
+  })
+
+  context.subscriptions.push(disposable)
+  context.subscriptions.push(didCloseTerminal)
+}
+
+export function deactivate() {
+  if (existingTerminal) {
+    existingTerminal.dispose()
+    existingTerminal = null
+  }
+}

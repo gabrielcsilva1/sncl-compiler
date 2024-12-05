@@ -1,6 +1,6 @@
-# sncl-copiler README
+# sncl-compiler README
 
-This is the README for your extension "sncl-copiler". After writing up a brief description, we recommend including the following sections.
+This is the README for your extension "sncl-compiler". After writing up a brief description, we recommend including the following sections.
 
 ## Features
 
