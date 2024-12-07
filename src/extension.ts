@@ -31,6 +31,4 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(terminalManager)
 }
 
-export function deactivate() {
-  vscode.window.showInformationMessage('oi')
-}
+export function deactivate() {}

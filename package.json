@@ -4,8 +4,9 @@
     "type": "git",
     "url": "https://github.com/gabrielcsilva1/sncl-compiler"
   },
-  "displayName": "sncl-compiler",
-  "description": "",
+  "displayName": "sNCL Compiler",
+  "description": "Extension to compile sNCL code to Ginga NCL",
+  "publisher": "gabrielcsilva1",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.95.0"
@@ -13,20 +14,29 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": ["onLanguage:sncl"],
+  "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
         "command": "sncl-compiler.compile",
-        "title": "Compile sNCl",
+        "title": "Compile sNCl to Ginga NCL",
+        "category": "sNCL",
         "icon": "$(play)"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "sncl",
+        "scopeName": "source.sncl",
+        "path": "./syntaxes/sncl.tmLanguage.json"
       }
     ],
     "languages": [
       {
         "id": "sncl",
         "aliases": ["sNCL", "sncl"],
+        "configuration": "./language-configuration.json",
         "extensions": [
           ".sncl"
         ]
@@ -40,7 +50,13 @@
           "group": "navigation"
         }
       ]
-    }
+    },
+    "snippets": [
+      {
+        "language": "sncl",
+        "path": "./snippets/sncl.code-snippets.json"
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "pnpm run compile",

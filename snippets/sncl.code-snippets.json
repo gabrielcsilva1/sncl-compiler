@@ -1,0 +1,57 @@
+{
+  "Area Declaration": {
+    "prefix": "area",
+    "body": [
+      "area ${1:id}",
+      "end"
+    ],
+    "description": "Create a new area"
+  },
+  "Context Declaration": {
+    "prefix": "context",
+    "body": [
+      "context ${1:id}",
+      "  port ${2:portId} ${3:component}",
+      "end"
+    ],
+    "description": "Create a new context"
+  },
+  "Media Declaration": {
+    "prefix": "media",
+    "body": [
+      "media ${1:id}",
+      "end"
+    ],
+    "description": "Create a new media"
+  },
+  "Port Declaration": {
+    "prefix": "port",
+    "body": [
+      "port ${1:id} ${2:component}"
+    ],
+    "description": "Create a new port"
+  },
+  "Condition Declaration": {
+    "prefix": "onBegin|onEnd|onSelection",
+    "body": [
+      "${1|onBegin,onEnd,onSelection|} ${2:component} do",
+      "end"
+    ],
+    "description": "Create a new link"
+  },
+  "Action Declaration": {
+    "prefix": "start|stop",
+    "body": [
+      "${1|start,stop|} ${2:component} end"
+    ],
+    "description": "Create a new action"
+  },
+  "Set Declaration": {
+    "prefix": "set",
+    "body": [
+      "set ${1:component}.${2:interface}",
+      " value: ${3:value}",
+      "end"
+    ]
+  }
+}
