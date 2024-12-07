@@ -1,5 +1,9 @@
 {
   "name": "sncl-compiler",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gabrielcsilva1/sncl-compiler"
+  },
   "displayName": "sncl-compiler",
   "description": "",
   "version": "0.0.1",
@@ -9,15 +13,34 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": ["onLanguage:sncl"],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
         "command": "sncl-compiler.compile",
-        "title": "Compile sNCl"
+        "title": "Compile sNCl",
+        "icon": "$(play)"
       }
-    ]
+    ],
+    "languages": [
+      {
+        "id": "sncl",
+        "aliases": ["sNCL", "sncl"],
+        "extensions": [
+          ".sncl"
+        ]
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "sncl-compiler.compile",
+          "when": "resourceLangId == sncl",
+          "group": "navigation"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "pnpm run compile",
@@ -25,7 +48,8 @@
     "watch": "tsc -watch -p ./",
     "pretest": "pnpm run compile && pnpm run lint",
     "lint": "eslint src",
-    "test": "vscode-test"
+    "test": "vscode-test",
+    "package": "pnpm vsce package --no-dependencies"
   },
   "devDependencies": {
     "@types/vscode": "^1.95.0",

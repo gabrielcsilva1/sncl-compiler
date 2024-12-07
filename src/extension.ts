@@ -1,24 +1,9 @@
 import * as vscode from 'vscode'
-import * as os from 'node:os'
-
-function formatToWslFilePath(filePath: string): string {
-  return filePath.replace(/^([A-Za-z]):/, '/mnt/$1').replace(/\\/g, '/')
-}
-
-function createTerminal(): vscode.Terminal {
-  if (os.platform() === 'win32') {
-    return vscode.window.createTerminal({
-      name: 'WSL (SNCL Compiler)',
-      shellPath: 'wsl.exe',
-    })
-  }
-
-  return vscode.window.createTerminal({ name: 'SNCL Compiler' })
-}
-
-let existingTerminal: vscode.Terminal | null = null
+import { makeTerminalManager } from './factories/makeTerminalManager'
 
 export function activate(context: vscode.ExtensionContext) {
+  const terminalManager = makeTerminalManager()
+
   const disposable = vscode.commands.registerCommand('sncl-compiler.compile', async () => {
     const editor = vscode.window.activeTextEditor
 
@@ -34,31 +19,18 @@ export function activate(context: vscode.ExtensionContext) {
       return
     }
 
-    if (os.platform() === 'win32') {
-      filePath = formatToWslFilePath(filePath)
-    }
-
-    if (!existingTerminal) {
-      existingTerminal = createTerminal()
-    }
-
-    existingTerminal.show()
-    existingTerminal.sendText(`sncl ${filePath}`)
+    terminalManager.executeSNCLCommand(filePath)
   })
 
   const didCloseTerminal = vscode.window.onDidCloseTerminal((closedTerminal) => {
-    if (closedTerminal === existingTerminal) {
-      existingTerminal = null
-    }
+    terminalManager.handleTerminalClose(closedTerminal)
   })
 
   context.subscriptions.push(disposable)
   context.subscriptions.push(didCloseTerminal)
+  context.subscriptions.push(terminalManager)
 }
 
 export function deactivate() {
-  if (existingTerminal) {
-    existingTerminal.dispose()
-    existingTerminal = null
-  }
+  vscode.window.showInformationMessage('oi')
 }
