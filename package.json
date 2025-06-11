@@ -29,14 +29,14 @@
       {
         "language": "sncl",
         "scopeName": "source.sncl",
-        "path": "./syntaxes/sncl.tmLanguage.json"
+        "path": "./language/sncl.tmLanguage.json"
       }
     ],
     "languages": [
       {
         "id": "sncl",
         "aliases": ["sNCL", "sncl"],
-        "configuration": "./language-configuration.json",
+        "configuration": "./language/language-configuration.json",
         "extensions": [
           ".sncl"
         ]
@@ -54,7 +54,7 @@
     "snippets": [
       {
         "language": "sncl",
-        "path": "./snippets/sncl.code-snippets.json"
+        "path": "./language/sncl.snippets.json"
       }
     ]
   },

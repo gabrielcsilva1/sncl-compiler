@@ -31,27 +31,20 @@
     ],
     "description": "Create a new port"
   },
-  "Condition Declaration": {
-    "prefix": "onBegin|onEnd|onSelection",
+  "Region Declaration": {
+    "prefix": "region",
     "body": [
-      "${1|onBegin,onEnd,onSelection|} ${2:component} do",
+      "region ${1:id}",
       "end"
     ],
-    "description": "Create a new link"
+    "description": "Create a new media"
   },
-  "Action Declaration": {
-    "prefix": "start|stop",
+  "Macro Declaration": {
+    "prefix": "macro",
     "body": [
-      "${1|start,stop|} ${2:component} end"
-    ],
-    "description": "Create a new action"
-  },
-  "Set Declaration": {
-    "prefix": "set",
-    "body": [
-      "set ${1:component}.${2:interface}",
-      " value: ${3:value}",
+      "macro ${1:name}(${2:param})",
       "end"
-    ]
+    ],
+    "description": "Create a new macro"
   }
 }
