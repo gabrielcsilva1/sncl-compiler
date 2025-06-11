@@ -35,7 +35,10 @@
     "languages": [
       {
         "id": "sncl",
-        "aliases": ["sNCL", "sncl"],
+        "aliases": [
+          "sNCL",
+          "sncl"
+        ],
         "configuration": "./language/language-configuration.json",
         "extensions": [
           ".sncl"
@@ -67,15 +70,15 @@
     "test": "vscode-test",
     "package": "pnpm vsce package --no-dependencies"
   },
+  "dependencies": {
+    "chevrotain": "10.5.0"
+  },
   "devDependencies": {
-    "@types/vscode": "^1.95.0",
     "@types/mocha": "^10.0.9",
     "@types/node": "20.x",
-    "@typescript-eslint/eslint-plugin": "^8.10.0",
-    "@typescript-eslint/parser": "^8.7.0",
-    "eslint": "^9.13.0",
-    "typescript": "^5.6.3",
+    "@types/vscode": "^1.95.0",
     "@vscode/test-cli": "^0.0.10",
-    "@vscode/test-electron": "^2.4.1"
+    "@vscode/test-electron": "^2.4.1",
+    "typescript": "^5.6.3"
   }
 }

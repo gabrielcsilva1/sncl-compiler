@@ -1,8 +1,9 @@
 import * as vscode from 'vscode'
-import { makeTerminalManager } from './factories/makeTerminalManager'
+import { beginParse } from './sncl'
+import { SnclError } from './sncl/errors/sncl-error'
 
 export function activate(context: vscode.ExtensionContext) {
-  const terminalManager = makeTerminalManager()
+  const outputChannel = vscode.window.createOutputChannel('sNCL')
 
   const disposable = vscode.commands.registerCommand('sncl-compiler.compile', async () => {
     const editor = vscode.window.activeTextEditor
@@ -12,23 +13,28 @@ export function activate(context: vscode.ExtensionContext) {
       return
     }
 
-    let filePath = editor.document.fileName
+    const filePath = editor.document.fileName
 
     if (!filePath.endsWith('.sncl')) {
       vscode.window.showErrorMessage('O arquivo atual não possui a extensão .sncl.')
       return
     }
-
-    terminalManager.executeSNCLCommand(filePath)
-  })
-
-  const didCloseTerminal = vscode.window.onDidCloseTerminal((closedTerminal) => {
-    terminalManager.handleTerminalClose(closedTerminal)
+    try {
+      await beginParse(filePath)
+      vscode.window.showInformationMessage('Compilation completed!')
+    } catch (error) {
+      if (error instanceof SnclError) {
+        outputChannel.clear()
+        outputChannel.show(true)
+        outputChannel.appendLine(error.message)
+      } else {
+        vscode.window.showErrorMessage('An unexpected error occurred')
+      }
+    }
   })
 
   context.subscriptions.push(disposable)
-  context.subscriptions.push(didCloseTerminal)
-  context.subscriptions.push(terminalManager)
+  context.subscriptions.push(outputChannel)
 }
 
 export function deactivate() {}
