@@ -46,6 +46,24 @@ export const Value = createToken({
   categories: [Argument],
 })
 
+export const WhiteSpace = createToken({
+  name: 'WhiteSpace',
+  pattern: /\s+/,
+  group: Lexer.SKIPPED,
+})
+
+const LineComment = createToken({
+  name: 'LineComment',
+  pattern: /\/\/[^\n\r]*/,
+  group: Lexer.SKIPPED
+})
+
+const BlockComment = createToken({
+  name: 'BlockComment',
+  pattern: /\/\*[^]*?\*\//,
+  group: Lexer.SKIPPED
+})
+
 /****************************************
  *               KEYWORDS               *
  ****************************************/
@@ -156,12 +174,6 @@ const SetToken = createToken({
   categories: Action,
 })
 
-export const WhiteSpace = createToken({
-  name: 'WhiteSpace',
-  pattern: /\s+/,
-  group: Lexer.SKIPPED,
-})
-
 /****************************************
  *                SYMBOLS               *
  ****************************************/
@@ -200,6 +212,8 @@ export const RParen = createToken({
 
 export const allTokens = [
   WhiteSpace,
+  LineComment,
+  BlockComment,
   // categories
   Action,
   Condition,

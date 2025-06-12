@@ -117,7 +117,7 @@ export class SnclVisitor extends BaseSnclVisitor implements ISnclVisitor {
 
     const properties = this.convertPropertiesToObject(children.property)
 
-    const { rg, src, ...rest } = properties
+    const { rg, src, type, ...rest } = properties
     element.regionId = rg
     element.src = src
     element.properties = rest

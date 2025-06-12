@@ -27,6 +27,7 @@ export function activate(context: vscode.ExtensionContext) {
         outputChannel.clear()
         outputChannel.show(true)
         outputChannel.appendLine(error.message)
+        vscode.window.showErrorMessage(error.message)
       } else {
         vscode.window.showErrorMessage('An unexpected error occurred')
       }
